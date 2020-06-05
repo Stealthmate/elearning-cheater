@@ -54,10 +54,10 @@
           outi.empty()
           var x;
           for(x in outs) {
-              let y = String(outs[x])
-              y = y.substring(1, y.length-1)
+              let y = String(outs[x]);
+              y = y.substring(1, y.length-1);
               if(y == 'Cloze') continue;
-              outi.append("<li>" + outs[x] + "</li>");
+              outi.append("<li>" + y + "</li>");
           };
       })
     </script>
@@ -89,7 +89,52 @@
               let y = String(outs[x])
               outi.append("<li>" + y.substring(2, y.length-2) + "</li>");
           };
-      })
+      });
+      </script>
+
+    <hr />
+
+    <h1>
+      Listening
+    </h1>
+
+    <h2>
+      入力
+    </h2>
+
+    <textarea id="listening_in"></textarea>
+    <h2>
+      答え
+    </h2>
+    <ul id="listening_out">
+
+    </ul>
+
+    <script>
+
+      $("#listening_in").bind("input propertychange", function() {
+          xmlDoc = $.parseXML(this.value);
+          let $xml = $(xmlDoc)
+
+          let qs = $xml.find("question")
+          let i = 0;
+          for(i = 0; i < qs.length; i++) {
+
+              let ans = $(qs[i]).find("answer")[0].innerHTML
+
+              let choices = $(qs[i]).find("choice")
+              let j = 0;
+              for(j = 0; j < choices.length; j++) {
+                  let v = choices[j].attributes["no"].value;
+                  if(v == ans) $("#listening_out").append("<li>" + choices[j].innerHTML + "</li>")
+              }
+
+
+          }
+
+      });
+
     </script>
+
   </body>
 </html>
